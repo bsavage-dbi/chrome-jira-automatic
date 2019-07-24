@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>JIRAサポート</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+	<script src="jquery.min.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<script src="popup.js"></script>
+</head>
+<body>
+	<style type="text/css">
+		table {
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+
+		div{
+			padding-bottom: 5px;
+			padding-top: 5px;
+		}
+
+		table, th, td {
+		  border: 1px solid black;
+		}
+		th {
+		  height: 20px;
+		}
+		th, td {
+		  padding: 5px;
+		  text-align: left;
+		}
+		tr:nth-child(even) {background-color: #f2f2f2;}
+		th {
+		  background-color: #009688;
+		  color: white;
+		}
+
+		input[type=button] {
+		  background-color: #009688;
+		  border: none;
+		  color: white;
+		  padding: 5px;
+		  text-decoration: none;
+		  margin: 4px 0px;
+		  cursor: pointer;
+		}
+
+		input[disabled] {
+		  background-color: #868686;
+		  border: none;
+		  color: white;
+		  padding: 5px;
+		  text-decoration: none;
+		  margin: 4px 0px;
+		  cursor: pointer;
+		}
+
+		span[ready]{
+			color:red;
+		}
+
+		span[complete]{
+			color:green;
+		}
+
+		#alertInfo{
+			font-size: 12px;
+   			padding: 5px;
+		}
+
+		.tab-content{
+			width: 500px;
+		}
+
+	</style>
+	<div class="container">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">サブタスク導入</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="true">使い方</a>
+		  </li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+		  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+		  	<div class="alert alert-info" id="alertInfo" role="alert" hidden>
+			</div>
+			<input type = "file" id="id_file"/>
+			<div id = "preView"></div>
+			<input type = "button" id="id_refresh" value = "リフレッシュ"/>
+			<input type = "button" id = "id_start" value = "入力開始" disabled />
+		  </div>
+		   <div class="tab-pane fade show" id="help" role="tabpanel" aria-labelledby="help-tab">
+		   	<div class="jumbotron">
+			  <h1 class="display-4">JIRA Support</h1>
+			  <p class="lead">ver0.1</p>
+			  <hr class="my-4">
+			  <p>JIRA自動入力対応のツールです.対応機能：</p>
+			  <p>・サブタスク自動入力</p>
+			  <a class="btn btn-primary btn-lg" id = "instruction" role="button">使い方</a>
+			</div>
+		   </div>
+		</div>
+	</div>
+</body>
+</html>
