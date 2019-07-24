@@ -20,7 +20,7 @@ function click(e) {
 }
 
 function gotoInstruction(e) {
-  var action_url = "https://confluence.sbshopself.jp.altemista.cloud/pages/viewpage.action?pageId=1004277";
+  var action_url = "https://github.com/hiroshikana/chrome-jira-automatic/tree/master";
   chrome.tabs.create({url: action_url});
 }
 
