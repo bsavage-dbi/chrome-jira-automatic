@@ -8,12 +8,12 @@ A chrome extension for creating jira subtask automatically.
 ## Now Provide
 ・Create subtask automatically
 
-## guidance
+## Guidance
 
-### download and install
+### Download and install
 Download zip and extract, let you chrome browser to add this package to extension to start.
 
-### usage
+### Usage
 - first you need to prepare the input subtask data with format like this:
 ~~~txt
 taskA   1h
