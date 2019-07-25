@@ -5,6 +5,9 @@ A chrome extension for creating jira subtask automatically.
 
 > VERSION 0.1
 
+## Now Provide
+・Create subtask automatically
+
 ## guidance
 
 ### download and install
