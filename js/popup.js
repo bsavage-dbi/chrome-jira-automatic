@@ -10,7 +10,7 @@ function click(e) {
 
     //click + button
      chrome.tabs.executeScript(null,{file:"/js/jquery.min.js"}, function () {
-           chrome.tabs.executeScript(null,{file:"/jsinputLogic.js"});
+           chrome.tabs.executeScript(null,{file:"/js/inputLogic.js"});
     });
   }
 
