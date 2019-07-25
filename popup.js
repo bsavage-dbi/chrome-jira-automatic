@@ -5,7 +5,7 @@ var dataStr;
 function click(e) {
   if(e.target.id == "id_start"){
     $("#id_start").attr("disabled","");
-    $("#alertInfo").html("プロセス開始しました、全部完了までしばらくお待ちください。リフレッシュで状況確認できます。");
+    $("#alertInfo").html("Start processing...wait until all task import completely or press `resfresh` to check processing status.");
     // $("#alertInfo").css("alert alert-info");
 
     //click + button
@@ -55,9 +55,9 @@ function createPreView(){
     let timeheadCell = document.createElement("TH");
     let processheadCell = document.createElement("TH");
     indexheadCell.innerHTML = "TID";
-    titleheadCell.innerHTML = "タスク";
-    timeheadCell.innerHTML = "見積";
-    processheadCell.innerHTML = "プロセス";
+    titleheadCell.innerHTML = "SUBTASK";
+    timeheadCell.innerHTML = "ESTIMATE";
+    processheadCell.innerHTML = "STATUS";
     hRow.appendChild(indexheadCell);
     hRow.appendChild(titleheadCell);
     hRow.appendChild(timeheadCell);
@@ -93,7 +93,8 @@ function validateInput(inputString){
     //active reflesh
     $("#id_start").removeAttr("disabled");
     $("#alertInfo").removeAttr("hidden");
-    $("#alertInfo").html("データアップロード成功しました、内容確認した上で処理開始ボタンを押下してください。");
+    $("#alertInfo").html("Upload completely!Press `process` after confirming your input is right.");
+    createPreView();
   }
 }
 

@@ -5,7 +5,7 @@
   "browser_action": {
       "default_icon": "jiraSup.png",
       "default_popup": "popup.html",
-      "default_title": "JIRAサポート"
+      "default_title": "JIRA Support"
    },
    "permissions": [
     "activeTab","storage"

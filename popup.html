@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>JIRAサポート</title>
+	<title>JIRA Support</title>
 	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 	<script src="jquery.min.js"></script>
 	<script src="bootstrap.min.js"></script>
@@ -77,10 +77,10 @@
 	<div class="container">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 		  <li class="nav-item">
-		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">サブタスク導入</a>
+		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Subtask Import</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="true">使い方</a>
+		    <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="true">README</a>
 		  </li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
@@ -89,17 +89,17 @@
 			</div>
 			<input type = "file" id="id_file"/>
 			<div id = "preView"></div>
-			<input type = "button" id="id_refresh" value = "リフレッシュ"/>
-			<input type = "button" id = "id_start" value = "入力開始" disabled />
+			<input type = "button" id="id_refresh" value = "Refresh"/>
+			<input type = "button" id = "id_start" value = "Process" disabled />
 		  </div>
 		   <div class="tab-pane fade show" id="help" role="tabpanel" aria-labelledby="help-tab">
 		   	<div class="jumbotron">
 			  <h1 class="display-4">JIRA Support</h1>
 			  <p class="lead">ver0.1</p>
 			  <hr class="my-4">
-			  <p>JIRA自動入力対応のツールです.対応機能：</p>
-			  <p>・サブタスク自動入力</p>
-			  <a class="btn btn-primary btn-lg" id = "instruction" role="button">使い方</a>
+			  <p>A convenient tool for JIRA.now support：</p>
+			  <p>・Import Subtask automatically</p>
+			  <a class="btn btn-primary btn-lg" id = "instruction" role="button">Guidance</a>
 			</div>
 		   </div>
 		</div>
