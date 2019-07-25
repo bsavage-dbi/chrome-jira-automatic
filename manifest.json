@@ -3,7 +3,7 @@
   "name": "JIRA support",
   "version": "0.1",
   "browser_action": {
-      "default_icon": "jiraSup.png",
+      "default_icon": "/res/jiraSup.png",
       "default_popup": "popup.html",
       "default_title": "JIRA Support"
    },
