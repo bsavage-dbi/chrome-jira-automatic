@@ -9,8 +9,8 @@ function click(e) {
     // $("#alertInfo").css("alert alert-info");
 
     //click + button
-     chrome.tabs.executeScript(null,{file:"jquery.min.js"}, function () {
-           chrome.tabs.executeScript(null,{file:"inputLogic.js"});
+     chrome.tabs.executeScript(null,{file:"/js/jquery.min.js"}, function () {
+           chrome.tabs.executeScript(null,{file:"/jsinputLogic.js"});
     });
   }
 
