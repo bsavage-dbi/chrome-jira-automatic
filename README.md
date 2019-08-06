@@ -31,3 +31,8 @@ taskB   3h
 - click start after you make sure your data is right
 
 - refresh to check process status whenever you want
+
+### TODO
+- Make button group fixed on bottom
+- Support adding multi task
+- Abend loading file to read data
