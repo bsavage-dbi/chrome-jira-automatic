@@ -71,37 +71,87 @@
 
 		.tab-content{
 			width: 500px;
+			height: 500px;
 		}
 
 	</style>
 	<div class="container">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 		  <li class="nav-item">
-		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Subtask Import</a>
+		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Task Import</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="true">README</a>
+			<a class="nav-link" id="prelist-tab" data-toggle="tab" href="#prelist" role="tab" aria-controls="prelist" aria-selected="true">Preview</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="true">Readme</a>
 		  </li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
 		  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 		  	<div class="alert alert-info" id="alertInfo" role="alert" hidden>
 			</div>
-			<input type = "file" id="id_file"/>
-			<div id = "preView"></div>
+			<input type = "file" id="id_file" style="display: none"/>
+			<div id = "card-list">
+				<div class="card" style="width:9rem;height:9rem;display: inline-block;margin: 10px">
+					<div class="card-body">
+						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal" data-whatever="@getbootstrap">
+							<img src="./res/baseline_add.png" class="img-thumbnail" style = "border: 0px;width:-webkit-fill-available;height:auto;" onblur="" >
+						</button>
+					</div>
+					<div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="newTaskModalLabel">New Task</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form>
+								<div class="form-group">
+									<label for="task-name" class="col-form-label">Task Name:</label>
+									<input type="text" class="form-control" id="task-name">
+								</div>
+								<div class="form-group">
+									<label for="task-text" class="col-form-label">Data Content:</label>
+									<textarea class="form-control" id="task-text"></textarea>
+								</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button id = "id_add" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card" style="width:9rem;height:9rem;display: inline-block; margin: 10px">
+					<div class="card-body">
+						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal" data-whatever="@getbootstrap">
+							<img src="./res/baseline_add.png" class="img-thumbnail" style = "border: 0px;width:-webkit-fill-available;height:auto;" onblur="" >
+						</button>
+					</div>
+				</div>
+			</div>		
 			<input type = "button" id="id_refresh" value = "Refresh"/>
 			<input type = "button" id = "id_start" value = "Process" disabled />
 		  </div>
-		   <div class="tab-pane fade show" id="help" role="tabpanel" aria-labelledby="help-tab">
-		   	<div class="jumbotron">
-			  <h1 class="display-4">JIRA Support</h1>
-			  <p class="lead">ver0.1</p>
-			  <hr class="my-4">
-			  <p>A convenient tool for JIRA.now support：</p>
-			  <p>・Import Subtask automatically</p>
-			  <a class="btn btn-primary btn-lg" id = "instruction" role="button">Guidance</a>
+		<div class="tab-pane fade show" id="prelist" role="tabpanel" aria-labelledby="prelist-tab">
+			<div id = "preView"></div>
+		</div>
+		<div class="tab-pane fade show" id="help" role="tabpanel" aria-labelledby="help-tab">
+			<div class="jumbotron">
+				<h1 class="display-4">JIRA Support</h1>
+				<p class="lead">ver0.1</p>
+				<hr class="my-4">
+				<p>A convenient tool for JIRA.now support：</p>
+				<p>・Import Subtask automatically</p>
+				<a class="btn btn-primary btn-lg" id = "instruction" role="button">Guidance</a>
 			</div>
-		   </div>
+		</div>
 		</div>
 	</div>
 </body>

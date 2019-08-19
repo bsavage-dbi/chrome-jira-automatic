@@ -17,6 +17,14 @@ function click(e) {
   if(e.target.id == "id_refresh"){
     createPreView();
   }
+
+  if(e.target.id == "id_add"){
+    // add card 
+    let taskName = $("#task-name").val();
+    let taskText = $("#task-text").val();
+    validateInput(taskName,taskText);
+    renderCard();
+  }
 }
 
 function gotoInstruction(e) {
@@ -84,12 +92,13 @@ function createPreView(){
   });
 }
 
-function validateInput(inputString){
+function validateInput(taskName,inputString){
   if(inputString.length > 0){
     //change to Object
-    var inlineDatas = inputString.split("\r\n");
+    console.log(inputString)
+    var inlineDatas = inputString.split("\n");
     console.log(inlineDatas)
-    setToLocalStorage(trasferToKVStructure(inlineDatas));
+    setToLocalStorage(taskName,trasferToKVStructure(inlineDatas));
     //active reflesh
     $("#id_start").removeAttr("disabled");
     $("#alertInfo").removeAttr("hidden");
@@ -110,11 +119,23 @@ function trasferToKVStructure(datas){
   return obj;
 }
 
-function setToLocalStorage(obj){
+function setToLocalStorage(name,obj){
+  let storageName = "jira_support_data".concat(name);
+  chrome.storage.local.get(["jira_support_tasks"],(result)=>{
+    if(result["jira_support_tasks"].length>0){
+      chrome.storage.local.set({"storageName" : result["jira_support_tasks"].push(name)});
+    }else{
+      chrome.storage.local.set({"storageName" : [].push(name)});
+    }
+  });
   if(obj && obj.length > 0){
     console.log(obj)
-    chrome.storage.local.set({"jira_support_data_subtask":obj});
+    chrome.storage.local.set({storageName : obj});
   }
+}
+
+function renderCard(){
+  console.log()
 }
 
 document.addEventListener('DOMContentLoaded', (tab)=>{
@@ -135,6 +156,22 @@ document.addEventListener('DOMContentLoaded', (tab)=>{
           aLabel[i].addEventListener('click', gotoInstruction);
     }   
   }
+
+  var aButton = document.querySelectorAll('button');
+  for (var i = 0; i < aButton.length; i++) {
+    if("button" == aButton[i].type){
+      aButton[i].addEventListener('click', click);
+    }   
+  }
+
 });
 
+
+$('#newTaskModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('whatever')
+  var modal = $(this)
+  modal.find('.modal-title').text('New message to ' + recipient)
+  modal.find('.modal-body input').val(recipient)
+})
 
