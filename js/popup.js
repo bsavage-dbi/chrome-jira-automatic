@@ -121,11 +121,9 @@ function trasferToKVStructure(datas){
 
 function setToLocalStorage(name,obj){
   let storageName = "jira_support_data".concat(name);
-  chrome.storage.local.get(["jira_support_tasks"],(result)=>{
-    if(result["jira_support_tasks"].length>0){
-      chrome.storage.local.set({"storageName" : result["jira_support_tasks"].push(name)});
-    }else{
-      chrome.storage.local.set({"storageName" : [].push(name)});
+  chrome.storage.local.get([storageName],(result)=>{
+    if(result[storageName].length <= 0){
+      chrome.storage.local.set({"storageName" : [].push(storageName)});
     }
   });
   if(obj && obj.length > 0){
@@ -135,7 +133,60 @@ function setToLocalStorage(name,obj){
 }
 
 function renderCard(){
-  console.log()
+  chrome.storage.local.get(["storageName"],(result)=>{
+    let taskName;
+    let estimate;
+    let taskCnt;
+    result["storageName"].forEach(function(item){
+      chrome.storage.local.get([item],(result)=>{
+        let lastChild = $("#card-list")[0].children[$("#card-list")[0].children.length-1]
+        let newCard = generateCard(taskName, estimate, taskCnt);
+        $("#card-list")[0].insertBefore(newCard,lastChild);
+      })
+    });
+  });
+}
+
+function generateCard(taskName, estimate, taskCnt){
+  let cardElemnet = document.createElement("div");
+  cardElemnet.className  = "card border-dark";
+  cardElemnet.style = "max-width: 9rem;max-height: 9rem;margin: 0.25rem;";
+  
+  let cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+  cardBody.style = "padding: 0.25rem;";
+  
+  let cardFlex = document.createElement("div");
+  cardFlex.style = "d-flex flex-column bd-highlight mb-3;";
+
+  let taskNameDiv = document.createElement("div");
+  taskNameDiv.className = "p-2 bd-highlight";
+  taskNameDiv.innerText = taskName
+
+  let estimateDiv = document.createElement("div");
+  estimateDiv.className = "p-2 bd-highlight";
+  estimateDiv.appendChild(`<img src="./res/baseline_access_time_black_18dp.png" class="img-thumbnail" style = "border: 0px;" >`);
+  let estimateSpan = document.createElement("span");
+  estimateSpan.className = "card-title";
+  estimateSpan.innerText = estimate + "h";
+  estimateDiv.appendChild(estimateSpan);
+  
+  let taskCntDiv = document.createElement("div");
+  taskCntDiv.className = "p-2 bd-highlight";
+  taskCntDiv.appendChild(`<img src="./res/baseline_list_black_18dp.png" class="img-thumbnail" style = "border: 0px;" >`);
+  let taskCntSpan = document.createElement("span");
+  taskCntSpan.className = "card-title";
+  taskCntSpan.innerText = taskCnt;
+  taskCntDiv.appendChild(taskCntSpan);
+
+  //add task detail to flex
+  cardFlex.appendChild(taskNameDiv);
+  cardFlex.appendChild(estimateSpan);
+  cardFlex.appendChild(taskCntDiv);
+  cardBody.appendChild(cardFlex);
+  cardElemnet.appendChild(cardBody);
+  
+  return cardElemnet;
 }
 
 document.addEventListener('DOMContentLoaded', (tab)=>{

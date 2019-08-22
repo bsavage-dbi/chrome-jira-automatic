@@ -15,11 +15,6 @@
 		  width: 100%;
 		}
 
-		div{
-			padding-bottom: 5px;
-			padding-top: 5px;
-		}
-
 		table, th, td {
 		  border: 1px solid black;
 		}
@@ -74,6 +69,7 @@
 			height: 500px;
 		}
 
+
 	</style>
 	<div class="container">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -89,11 +85,27 @@
 		</ul>
 		<div class="tab-content" id="myTabContent">
 		  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-		  	<div class="alert alert-info" id="alertInfo" role="alert" hidden>
-			</div>
+		  	<div class="alert alert-info" id="alertInfo" role="alert" hidden></div>
 			<input type = "file" id="id_file" style="display: none"/>
-			<div id = "card-list">
-				<div class="card" style="width:9rem;height:9rem;display: inline-block;margin: 10px">
+			<div id = "card-list" class="card-columns" style="padding: 5px 0px;display:flex;">
+				<div class="card border-dark" style="max-width: 9rem;max-height: 9rem;margin: 0.25rem;">
+					<div class="card-body" style = "padding: 0.25rem;">
+						<div class="d-flex flex-column bd-highlight mb-3">
+							<div class="p-2 bd-highlight">
+								RPAIKIOSK-3488
+							</div>
+							<div class="p-2 bd-highlight">
+								<img src="./res/baseline_access_time_black_18dp.png" class="img-thumbnail" style = "border: 0px;" >
+								<span class="card-title">140h</span>
+							</div>
+							<div class="p-2 bd-highlight">
+								<img src="./res/baseline_list_black_18dp.png" class="img-thumbnail" style = "border: 0px;" >
+								<span class="card-title">36</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card" style="max-width: 9rem;max-height: 9rem;margin: 0.25rem;"">
 					<div class="card-body">
 						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal" data-whatever="@getbootstrap">
 							<img src="./res/baseline_add.png" class="img-thumbnail" style = "border: 0px;width:-webkit-fill-available;height:auto;" onblur="" >
@@ -126,13 +138,6 @@
 							</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="card" style="width:9rem;height:9rem;display: inline-block; margin: 10px">
-					<div class="card-body">
-						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal" data-whatever="@getbootstrap">
-							<img src="./res/baseline_add.png" class="img-thumbnail" style = "border: 0px;width:-webkit-fill-available;height:auto;" onblur="" >
-						</button>
 					</div>
 				</div>
 			</div>		
