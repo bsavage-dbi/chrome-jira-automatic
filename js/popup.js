@@ -1,6 +1,8 @@
 'use strict';
 var dataStr;
 var storageTask;
+var modalflg = true;
+var jiraHost = "'https://jira.sbshopself.jp.altemista.cloud'";
 chrome.storage.local.set({storageTask : {}});
 //bind function
 function click(e) {
@@ -8,15 +10,44 @@ function click(e) {
     $('#id_start').attr('disabled','');
     $('#alertInfo').html('Start processing...wait until all task import completely or press `resfresh` to check processing status.');
     // $('#alertInfo').css('alert alert-info');
-
-    //click + button
-     chrome.tabs.executeScript(null,{file:'/js/jquery.min.js'}, function () {
-           chrome.tabs.executeScript(null,{file:'/js/inputLogic.js'});
+    //read from localstorage
+    chrome.storage.local.get({storageTask : {}},(result)=>{
+    let taskNames = Object.keys(result.storageTask);
+    let taskLists = Object.values(result.storageTask);
+      taskLists.forEach((taskList,idn)=>{
+      //forwarding to specific page 
+      alert(getTaskUrl(taskNames[idn]))
+      chrome.tabs.create({active: false, url: getTaskUrl(taskNames[idn])},()=>{
+        
+      });
+      
+      //every task list process here
+      var datas = trasferToKVStructureFromStorage(taskList);
+      asyncForEach(datas,async (data,index,datas)=>{
+        if(modalflg){
+          //click stqc_show when its 
+          openStqcShowPromise.then(()=>{
+            $('#summary').val(data["summary"]);
+            $('#timetracking_originalestimate').val(data["timetracking_originalestimate"]);
+          }).finally(()=>{
+            if("" != $('#summary').val()  && "" != $('#timetracking_originalestimate').val()){
+              $('#create-issue-submit').click();
+              console.log("created")
+              console.log($('#summary').val())
+            }
+            if(datas.length == index+1){
+              modalflg = false;
+              $('#qf-create-another').click();
+            }
+            //TODO:set popup status
+            datas[index]["completed"] = true;
+            setToLocalStorage(datas);
+          });
+        await timeout(2000);
+        }
+      });
     });
-  }
-
-  if(e.target.id == 'id_refresh'){
-    //createPreView();
+    });
   }
 
   if(e.target.id == 'id_add'){
@@ -27,42 +58,23 @@ function click(e) {
   }
 }
 
-
-function fade(e){
-    let targetElement = e.currentTarget;
-}
-
 function gotoInstruction(e) {
   var action_url = 'https://github.com/hiroshikana/chrome-jira-automatic/tree/master';
   chrome.tabs.create({url: action_url});
 }
 
-//bind function 
-function fileUpload(e) {
-  if(e.target.id == 'id_file'){
-    var files = e.target.files;
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      var reader = new FileReader();
-      reader.onload = function(evt) {
-          validateInput(evt.target.result);
-      };  
-      reader.onerror = function(evt) {
-        console.log(evt.target.error.name);
-      };
-      reader.readAsText(file, 'utf-8');
-    }
-  }
+function getTaskUrl(taskName){
+	let tsName = taskName.replace('jira_support_data_','');
+	if('string'==typeof(jiraHost)){
+		return jiraHost
+		.concat('/browse')
+		.concat('/').concat(tsName)
+	}
 }
 
-function createPreView(){
-  var taskName = '';
+function createPreView(tsName){
   chrome.storage.local.get({storageTask : {}},(result)=>{
-    result.storageTask.forEach((stname)=>{
-      //--------------------
-    });
-    taskName = result.storageTask[0];
-    chrome.storage.local.get([taskName],(rst1,taskName)=>{
+      let taskName = arguments[0];
       let tableDiv = document.getElementById('preView');
       tableDiv.innerHTML = '';
       let table = document.createElement('table');
@@ -81,7 +93,7 @@ function createPreView(){
       hRow.appendChild(titleheadCell);
       hRow.appendChild(timeheadCell);
       hRow.appendChild(processheadCell);
-      dataStr = rst1[taskName];
+      dataStr = result.storageTask[taskName];
       dataStr.forEach((item)=>{
         let newRow = body.insertRow();
         let inlineInfo1 = item['idn'];
@@ -101,8 +113,6 @@ function createPreView(){
       });
       tableDiv.append(table);
     });
-  });
- 
 }
 
 function validateInput(taskName,inputString){
@@ -131,26 +141,15 @@ function trasferToKVStructure(datas){
   return obj;
 }
 
-function setToLocalStorage(stName,obj){
-  chrome.storage.local.get({storageTask : {}},(result)=>{
-    if(undefined == result.storageTask.stName){
-        if(obj && obj.length > 0){
-          result.storageTask[arguments[0]] = obj
-          chrome.storage.local.set({storageTask : result.storageTask});
-          renderCard();
-    }
-  }
-  });
-}
-
 function renderCard(){
   chrome.storage.local.get({storageTask : {}},(rst1)=>{
     let children = $('#card-list')[0].children; 
     let taskList = Object.values(rst1.storageTask);
     let nameList = Object.keys(rst1.storageTask);
     //remove besides add card
-    for(let cnt = 0;cnt < children.length-1;cnt++){
-      $('#card-list')[0].removeChild(children[cnt]);
+    let originLength = children.length
+    for(let cnt = 0;cnt < originLength-1;cnt++){
+      $('#card-list')[0].removeChild(children[0]);
     }
     taskList.forEach(function(item,idn){
       let taskName;
@@ -165,6 +164,8 @@ function renderCard(){
         taskCnt = item.length;
         let newCard = generateCard(taskName, estimate.toString(), taskCnt);
         $('#card-list')[0].insertBefore(newCard,lastChild);
+        //band card event(open & close)
+        bindCardEvent();        
     });
   });
 }
@@ -172,7 +173,7 @@ function renderCard(){
 function generateCard(taskName, estimate, taskCnt){
   let cardElemnet = document.createElement('div');
   cardElemnet.className  = 'card border-dark';
-  cardElemnet.style = 'width: 9rem; max-width: 9rem;max-height: 9rem;margin: 0.25rem;';
+  cardElemnet.style = 'width: 9rem; max-width: 9rem;max-height: 9rem;margin: 0.25rem; box-shadow: 0 0 .25rem gray;border: 0px;';
   
   let cardBody = document.createElement('div');
   cardBody.className = 'card-body';
@@ -214,9 +215,26 @@ function generateCard(taskName, estimate, taskCnt){
   taskCntDiv.appendChild(taskCntSpan);
   
   let cardHover = document.createElement('div');
-  cardHover.className = "card-hover"
+  cardHover.className = 'card-hover'
+  let cardHoverImg = document.createElement('img');
+  cardHoverImg.className = 'img-thumbnail right-top';
+  cardHoverImg.src = './res/baseline_close_white_18dp.png';
+  cardHoverImg.style = 'border: 0px;';
+  cardHover.appendChild(cardHoverImg);
 
-  //add task detail to flex
+  let cardHoverProgress = document.createElement('div');
+  cardHoverProgress.className = 'progress';
+  cardHoverProgress.style = 'position: absolute;bottom: 0;left: 0;width: 100%;height:.25rem;';
+  let cardHoverProgressInside = document.createElement('div');
+  cardHoverProgressInside.className = 'progress-bar progress-bar-striped progress-bar-animated';
+  cardHoverProgressInside.setAttribute('role','progressbar');
+  cardHoverProgressInside.setAttribute('aria-valuenow','75');
+  cardHoverProgressInside.setAttribute('aria-valuemin','0');
+  cardHoverProgressInside.setAttribute('aria-valuemax','100');
+  cardHoverProgressInside.style = 'width: 0%;height:100%';
+  cardHoverProgress.appendChild(cardHoverProgressInside);
+  cardHover.appendChild(cardHoverProgress);
+
   cardFlex.appendChild(taskNameDiv);
   cardFlex.appendChild(estimateDiv);
   cardFlex.appendChild(taskCntDiv);
@@ -228,14 +246,17 @@ function generateCard(taskName, estimate, taskCnt){
 
 document.addEventListener('DOMContentLoaded', (tab)=>{
   var inputs = document.querySelectorAll('input');
+  
   for (var i = 0; i < inputs.length; i++) {
     if('button' == inputs[i].type){
+          //prevent enter key
+          inputs[i].addEventListener('keyup', function(event) {
+            if (event.keyCode === 13) {
+              event.preventDefault();
+            }
+          });
           inputs[i].addEventListener('click', click);
     }   
-
-    if('file' == inputs[i].type){
-          inputs[i].addEventListener('change', fileUpload);
-    }
   }
 
   var aLabel = document.querySelectorAll('a');
@@ -251,12 +272,72 @@ document.addEventListener('DOMContentLoaded', (tab)=>{
       aButton[i].addEventListener('click', click);
     }   
   }
-  var cards = document.querySelectorAll('.card');
-  console.log(cards)
+  var cards = document.querySelectorAll('.card.border-dark');
   for (var i = 0; i < cards.length; i++) {
-    cards[i].addEventListener('mouseover',fade);
+    cards[i].addEventListener('click',openPreview);
+  }
+
+  var delBtn = document.querySelectorAll('.img-thumbnail.right-top');
+  for (var i = 0; i < delBtn.length; i++) {
+    delBtn[i].addEventListener('click',delCard);
+
   }
 });
+
+function bindCardEvent(){
+  var cards = document.querySelectorAll('.card.border-dark');
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener('click',openPreview);
+  }
+
+  var delBtn = document.querySelectorAll('.img-thumbnail.right-top');
+  for (var i = 0; i < delBtn.length; i++) {
+    delBtn[i].addEventListener('click',delCard);
+  }
+}
+
+
+function delCard(e){
+  e.stopPropagation();
+  //delete page element
+  let currentCardNode = e.currentTarget.parentNode.parentNode;
+  document.getElementById('card-list').removeChild(currentCardNode);
+  //delete data from storage
+  let taskName = currentCardNode.getElementsByClassName('p-2 bd-highlight')[0].innerHTML;
+  var stName = 'jira_support_data_'.concat(taskName);
+  removeFromLocalStorage(stName);
+}
+
+function openPreview(e){
+  let currentCardNode = e.currentTarget.parentNode.parentNode;
+  let taskName = currentCardNode.getElementsByClassName('p-2 bd-highlight')[0].innerHTML;
+  var stName = 'jira_support_data_'.concat(taskName);
+  createPreView(stName);
+  $('#prelist-tab').click();
+}
+
+function setToLocalStorage(stName,obj){
+  chrome.storage.local.get({storageTask : {}},(result)=>{
+    let stName = arguments[0];
+    if(undefined == result.storageTask[stName]){
+        if(obj && obj.length > 0){
+          result.storageTask[stName] = obj
+          chrome.storage.local.set({storageTask : result.storageTask});
+          renderCard();
+    }
+  }
+  });
+}
+
+function removeFromLocalStorage(stName){
+  chrome.storage.local.get({storageTask : {}},(result)=>{
+    let stName = arguments[0];
+    if(undefined != result.storageTask[stName]){
+      delete result.storageTask[stName];
+    }
+    chrome.storage.local.set({storageTask : result.storageTask})
+  })
+}
 
 $('#newTaskModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)

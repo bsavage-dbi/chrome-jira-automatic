@@ -1,34 +1,5 @@
-var modalflg = true;
-(()=>{
-	//read from localstorage
-	chrome.storage.local.get(["jira_support_data_subtask"],(result)=>{
-		var datas = trasferToKVStructureFromStorage(result["jira_support_data_subtask"]);
-		asyncForEach(datas,async (data,index,datas)=>{
-			if(modalflg){
-				//click stqc_show when its 
-				openStqcShowPromise.then(()=>{
-					$('#summary').val(data["summary"]);
-					$('#timetracking_originalestimate').val(data["timetracking_originalestimate"]);
-				}).finally(()=>{
-					if("" != $('#summary').val()  && "" != $('#timetracking_originalestimate').val()){
-						$('#create-issue-submit').click();
-						console.log("created")
-						console.log($('#summary').val())
-					}
-					if(datas.length == index+1){
-						modalflg = false;
-						$('#qf-create-another').click();
-					}
-					//TODO:set popup status
-					datas[index]["completed"] = true;
-					setToLocalStorage(datas);
-				});
-			await timeout(2000);
-			}
-		});
-	
-	});
-})();
+
+
 
 function trasferToKVStructureFromStorage(datas){
   var obj = []

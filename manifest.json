@@ -1,13 +1,21 @@
 {
   "manifest_version": 2,
   "name": "JIRA support",
-  "version": "0.1",
+  "version": "0.2",
   "browser_action": {
       "default_icon": "/res/jiraSup.png",
       "default_popup": "popup.html",
       "default_title": "JIRA Support"
    },
    "permissions": [
-    "activeTab","storage"
-  ]
+    "tabs",
+    "storage",
+    "https://*/altemista.cloud/*","*://*/*"
+  ],"background": {
+    "scripts": [
+      "/js/jquery.min.js",
+      "/js/inputLogic.js"
+    ],
+    "persistent": false
+  }
 }

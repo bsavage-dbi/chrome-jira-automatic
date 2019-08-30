@@ -10,6 +10,7 @@
 </head>
 <body>
 	<style type="text/css">
+	
 		table {
 		  border-collapse: collapse;
 		  width: 100%;
@@ -69,22 +70,39 @@
 			height: 500px;
 		}
 
-		.card-hover:hover{
-			width: 9rem;
-			height: 9rem;
-			position: absolute;
-			opacity: 0.3;
-			background: black;
-			cursor: pointer;
-		}
-
 		.card-hover {
 			width: 9rem;
 			height: 9rem;
 			position: absolute;
 		}
 		
+		.card-hover:hover{
+			width: 9rem;
+			height: 9rem;
+			position: absolute;
+			opacity: 0.4;
+			background: black;
+			cursor: pointer;
+		}
+		
+		.right-top{
+			position: absolute;
+			top: 0;
+			right: 0;
+			background: none;
+		}
+		
+		.right-top:hover{
+			-webkit-animation:spin 0.5s linear ;
+			-moz-animation:spin 0.5s linear ;
+			animation:spin 0.5s linear ;
+		}
+		@-moz-keyframes spin { 100% { -moz-transform: rotate(180deg); } }
+		@-webkit-keyframes spin { 100% { -webkit-transform: rotate(180deg); } }
+		@keyframes spin { 100% { -webkit-transform: rotate(180deg); transform:rotate(180deg); } 	
+
 	</style>
+
 	<div class="container">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 		  <li class="nav-item">
@@ -138,7 +156,6 @@
 					</div>
 				</div>
 			</div>		
-			<input type = "button" id="id_refresh" value = "Refresh"/>
 			<input type = "button" id = "id_start" value = "Process" disabled />
 		  </div>
 		<div class="tab-pane fade show" id="prelist" role="tabpanel" aria-labelledby="prelist-tab">
