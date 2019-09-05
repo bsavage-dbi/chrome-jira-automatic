@@ -13,8 +13,7 @@
     "https://*/altemista.cloud/*","*://*/*"
   ],"background": {
     "scripts": [
-      "/js/jquery.min.js",
-      "/js/inputLogic.js"
+      "/js/jquery.min.js"
     ],
     "persistent": false
   }

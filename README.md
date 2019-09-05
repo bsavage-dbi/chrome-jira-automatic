@@ -3,10 +3,11 @@ chrome-jira-automatic
 
 A chrome extension for creating jira subtask automatically.
 
-> VERSION 0.1
+> VERSION 0.2
 
 ## Now Provide
 ・Create subtask automatically
+・Support multiple task
 
 ## Guidance
 
@@ -34,5 +35,7 @@ taskB   3h
 
 ### TODO
 - Make button group fixed on bottom
-- Support adding multi task
-- Abend loading file to read data
+- Support adding multi task (done)
+- Abend loading file to read data (done)
+- beautify UI
+- update tutorial
