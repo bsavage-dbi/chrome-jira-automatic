@@ -9,8 +9,8 @@ chrome.storage.local.set({ storageTask: {} });
 function click(e) {
   if (e.currentTarget.id == 'id_start') {
     $('#id_start').attr('disabled', '');
-    $('#alertInfo').html('Start processing...wait until all task import completely or press `resfresh` to check processing status.');
-    // $('#alertInfo').css('alert alert-info');
+    $('#alertInfo').html('Start processing...wait until all task import completely or click [card] to check processing status.');
+    $('#alertInfo').css('alert alert-info');
     //read from localstorage
     chrome.storage.local.get({ storageTask: {} }, (result) => {
       let taskNames = Object.keys(result.storageTask);

@@ -41,7 +41,7 @@ new Promise((resolve, reject)=>{
                   timetracking_originalestimate.value = data["timetracking_originalestimate"];
                 }).finally(()=>{
                   if("" != summary.value  && "" != timetracking_originalestimate.value){
-                    // createSubmit.click();
+                    createSubmit.click();
                     console.log("created")
                     console.log(summary.value)
                   }
@@ -49,7 +49,6 @@ new Promise((resolve, reject)=>{
                     modalflg = false;
                     createAnother.click();
                   }
-                  //TODO:set popup status
                   datas[index]["completed"] = true;
                   resetToLocalStorage(name,datas,result);
                 });
