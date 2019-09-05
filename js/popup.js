@@ -7,7 +7,7 @@ chrome.storage.local.set({ storageTask: {} });
 
 //bind function
 function click(e) {
-  if (e.target.id == 'id_start') {
+  if (e.currentTarget.id == 'id_start') {
     $('#id_start').attr('disabled', '');
     $('#alertInfo').html('Start processing...wait until all task import completely or press `resfresh` to check processing status.');
     // $('#alertInfo').css('alert alert-info');
@@ -23,7 +23,7 @@ function click(e) {
     });
   }
 
-  if (e.target.id == 'id_add') {
+  if (e.currentTarget.id == 'id_add') {
     // add card 
     let taskName = $('#task-name').val();
     let taskText = $('#task-text').val();

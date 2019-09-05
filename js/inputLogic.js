@@ -28,9 +28,11 @@ new Promise((resolve, reject)=>{
     (()=>{
             chrome.storage.local.get({storageTask : {}},(result)=>{
             let taskLists = Object.values(result.storageTask);
+            let taskNames = Object.keys(result.storageTask);
             //every task list process here
             console.log(taskLists)
             var datas = trasferToKVStructureFromStorage(taskLists[taskIdnParam]);
+            var name = taskNames[taskIdnParam];
             asyncForEach(datas,async (data,index,datas)=>{
               if(modalflg){
                 //click stqc_show when its 
@@ -49,7 +51,7 @@ new Promise((resolve, reject)=>{
                   }
                   //TODO:set popup status
                   datas[index]["completed"] = true;
-                  setToLocalStorage(datas);
+                  resetToLocalStorage(name,datas,result);
                 });
               await timeout(1000);
               }
@@ -81,16 +83,12 @@ new Promise((resolve, reject)=>{
     }
 
 
-    function setToLocalStorage(stName, obj) {
-        chrome.storage.local.get({ storageTask: {} }, (result) => {
-          let stName = arguments[0];
-          if (undefined == result.storageTask[stName]) {
+    function resetToLocalStorage(stName, obj,result) {
+          if (undefined != result.storageTask[stName]) {
             if (obj && obj.length > 0) {
               result.storageTask[stName] = obj
               chrome.storage.local.set({ storageTask: result.storageTask });
-              renderCard();
             }
           }
-        });
       }
     

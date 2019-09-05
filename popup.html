@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<title>JIRA Support</title>
@@ -7,65 +8,75 @@
 	<script src="/js/jquery.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/popup.js"></script>
-</head>
-<body>
 	<style type="text/css">
-	
-		table {
-		  border-collapse: collapse;
-		  width: 100%;
+		body{
+			padding-top: 4rem; 
 		}
 
-		table, th, td {
-		  border: 1px solid black;
+		table {
+			border-collapse: collapse;
+			width: 100%;
 		}
+
+		table,
+		th,
+		td {
+			border: 1px solid black;
+		}
+
 		th {
-		  height: 20px;
+			height: 20px;
 		}
-		th, td {
-		  padding: 5px;
-		  text-align: left;
+
+		th,
+		td {
+			padding: 5px;
+			text-align: left;
 		}
-		tr:nth-child(even) {background-color: #f2f2f2;}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
 		th {
-		  background-color: #009688;
-		  color: white;
+			background-color: #009688;
+			color: white;
 		}
 
 		input[type=button] {
-		  background-color: #009688;
-		  border: none;
-		  color: white;
-		  padding: 5px;
-		  text-decoration: none;
-		  margin: 4px 0px;
-		  cursor: pointer;
+			background-color: #009688;
+			border: none;
+			color: white;
+			padding: 5px;
+			text-decoration: none;
+			margin: 4px 0px;
+			cursor: pointer;
 		}
 
 		input[disabled] {
-		  background-color: #868686;
-		  border: none;
-		  color: white;
-		  padding: 5px;
-		  text-decoration: none;
-		  margin: 4px 0px;
-		  cursor: pointer;
+			background-color: #868686;
+			border: none;
+			color: white;
+			padding: 5px;
+			text-decoration: none;
+			margin: 4px 0px;
+			cursor: pointer;
 		}
 
-		span[ready]{
-			color:red;
+		span[ready] {
+			color: red;
 		}
 
-		span[complete]{
-			color:green;
+		span[complete] {
+			color: green;
 		}
 
-		#alertInfo{
+		#alertInfo {
 			font-size: 12px;
-   			padding: 5px;
+			padding: 5px;
 		}
 
-		.tab-content{
+		.tab-content {
 			width: 500px;
 			height: 500px;
 		}
@@ -75,8 +86,8 @@
 			height: 9rem;
 			position: absolute;
 		}
-		
-		.card-hover:hover{
+
+		.card-hover:hover {
 			width: 9rem;
 			height: 9rem;
 			position: absolute;
@@ -84,93 +95,155 @@
 			background: black;
 			cursor: pointer;
 		}
-		
-		.right-top{
+
+		.right-top {
 			position: absolute;
 			top: 0;
 			right: 0;
 			background: none;
 		}
-		
-		.right-top:hover{
-			-webkit-animation:spin 0.5s linear ;
-			-moz-animation:spin 0.5s linear ;
-			animation:spin 0.5s linear ;
-		}
-		@-moz-keyframes processon { 100% { width: 100%;  } }
-		@-webkit-keyframes processon { 100% { width: 100%; } }
-		@keyframes processon { 100% { width: 100%; } 	
-	</style>
 
-	<div class="container">
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-		  <li class="nav-item">
-		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Task Import</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" id="prelist-tab" data-toggle="tab" href="#prelist" role="tab" aria-controls="prelist" aria-selected="true">Preview</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="true">Readme</a>
-		  </li>
+		.right-top:hover {
+			-webkit-animation: spin 0.5s linear;
+			-moz-animation: spin 0.5s linear;
+			animation: spin 0.5s linear;
+		}
+
+		.navbar {
+			position: relative;
+			min-height: 50px;
+			margin-bottom: 20px;
+			border: 1px solid transparent;
+		}
+
+		.navbar-default {
+			background-color: #f8f8f8;
+			border-color: #e7e7e7;
+		}
+
+		.navbar-fixed-top {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			z-index: 1030;
+			border-width: 0 0 1px;
+		}
+
+		.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+			color: #fff;
+			background-color: darkslateblue;
+		}
+
+		a {
+			color: slateblue;
+			text-decoration: none;
+			background-color: transparent;
+		}
+
+		@-moz-keyframes processon {
+			100% {
+				width: 100%;
+			}
+		}
+
+		@-webkit-keyframes processon {
+			100% {
+				width: 100%;
+			}
+		}
+
+		@keyframes processon {
+			100% {
+				width: 100%;
+			}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<ul class="nav nav-pills " id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+					aria-selected="true">Task Import</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="prelist-tab" data-toggle="tab" href="#prelist" role="tab"
+					aria-controls="prelist" aria-selected="true">Preview</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help"
+					aria-selected="true">Readme</a>
+			</li>
 		</ul>
+	</nav>
+	<div class="container">
 		<div class="tab-content" id="myTabContent">
-		  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-		  	<div class="alert alert-info" id="alertInfo" role="alert" hidden></div>
-			<input type = "file" id="id_file" style="display: none"/>
-			<div id = "card-list" class="card-columns d-flex flex-wrap" style="padding: 5px 0px;display:flex;">
-				<div class="card" style="max-width: 9rem;max-height: 9rem;margin: 0.25rem;"">
-					<div class="card-body">
-						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal" data-whatever="@getbootstrap">
-							<img src="./res/baseline_add.png" class="img-thumbnail" style = "border: 0px;width:-webkit-fill-available;height:auto;" onblur="" >
+			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<div class="alert alert-info" id="alertInfo" role="alert" hidden></div>
+				<input type="file" id="id_file" style="display: none" />
+				<div id="card-list" class="card-columns d-flex flex-wrap" style="padding: 5px 0px;display:flex;">
+					<div class="card" style="max-width: 9rem;max-height: 9rem;margin: 0.25rem;"">
+					<div class=" card-body">
+						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal"
+							data-whatever="@getbootstrap">
+							<img src="./res/baseline_add.png" class="img-thumbnail"
+								style="border: 0px;width:-webkit-fill-available;height:auto;" onblur="">
 						</button>
 					</div>
-					<div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+					<div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog"
+						aria-labelledby="newTaskModalLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="newTaskModalLabel">New Task</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form>
-								<div class="form-group">
-									<label for="task-name" class="col-form-label">Task Name:</label>
-									<input type="text" class="form-control" id="task-name" maxlength="14">
+								<div class="modal-header">
+									<h5 class="modal-title" id="newTaskModalLabel">New Task</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
 								</div>
-								<div class="form-group">
-									<label for="task-text" class="col-form-label">Data Content:</label>
-									<textarea class="form-control" id="task-text"></textarea>
+								<div class="modal-body">
+									<form>
+										<div class="form-group">
+											<label for="task-name" class="col-form-label">Task Name:</label>
+											<input type="text" class="form-control" id="task-name" maxlength="14">
+										</div>
+										<div class="form-group">
+											<label for="task-text" class="col-form-label">Data Content:</label>
+											<textarea class="form-control" id="task-text" style = "height: 12rem"></textarea>
+										</div>
+									</form>
 								</div>
-								</form>
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button id = "id_add" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
-							</div>
+								<div class="modal-footer">
+									<button class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button id="id_add" type="button" class="btn btn-primary"
+										data-dismiss="modal">Add</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>		
-			<input type = "button" id = "id_start" value = "Process" disabled />
-		  </div>
+			</div>
+			<button type="button" id="id_start" class="btn" style="position: fixed;bottom: 2rem;right: 2rem;" disabled>
+				<img src="./res/baseline_play_arrow_black_48dp.png" class="img-thumbnail"
+					style="border: 0px;width:-webkit-fill-available;height:auto;">
+			</button>
+		</div>
 		<div class="tab-pane fade show" id="prelist" role="tabpanel" aria-labelledby="prelist-tab">
-			<div id = "preView"></div>
+			<div id="preView"></div>
 		</div>
 		<div class="tab-pane fade show" id="help" role="tabpanel" aria-labelledby="help-tab">
-			<div class="jumbotron">
+			<div class="jumbotron" style="height: 500px">
 				<h1 class="display-4">JIRA Support</h1>
-				<p class="lead">ver0.1</p>
+				<p class="lead">ver0.2</p>
 				<hr class="my-4">
-				<p>A convenient tool for JIRA.now support：</p>
-				<p>・Import Subtask automatically</p>
-				<a class="btn btn-primary btn-lg" id = "instruction" role="button">Guidance</a>
+				<p>A convenient tool for JIRA. support：</p>
+				<p>・Import subtask automatically</p>
+				<p>・Support multiple task</p>
+				<a class="btn btn-primary btn-lg" id="instruction" role="button">Guidance</a>
 			</div>
 		</div>
-		</div>
+	</div>
 	</div>
 </body>
+
 </html>
