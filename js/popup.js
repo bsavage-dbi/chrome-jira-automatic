@@ -1,14 +1,9 @@
 'use strict';
 var dataStr;
 var storageTask;
-var jiraHost = "https://jira.sbshopself.jp.altemista.cloud";
+var jiraHost = window.location.hostname;
 var tipsOnFlg = false;
 chrome.storage.local.set({ storageTask: {} });
-
-// $(function () {
-//   $('[data-toggle="popover-add"]').popover("show")
-// })
-
 
 
 //bind function
