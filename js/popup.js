@@ -2,15 +2,21 @@
 var dataStr;
 var storageTask;
 var jiraHost = "https://jira.sbshopself.jp.altemista.cloud";
+var tipsOnFlg = false;
 chrome.storage.local.set({ storageTask: {} });
+
+// $(function () {
+//   $('[data-toggle="popover-add"]').popover("show")
+// })
+
 
 
 //bind function
 function click(e) {
   if (e.currentTarget.id == 'id_start') {
     $('#id_start').attr('disabled', '');
-    $('#alertInfo').html('Start processing...wait until all task import completely or click [card] to check processing status.');
-    $('#alertInfo').css('alert alert-info');
+    // $('#alertInfo').html('Start processing...wait until all task import completely or click [card] to check processing status.');
+    // $('#alertInfo').css('alert alert-info');
     //read from localstorage
     chrome.storage.local.get({ storageTask: {} }, (result) => {
       let taskNames = Object.keys(result.storageTask);
@@ -23,11 +29,38 @@ function click(e) {
     });
   }
 
+
   if (e.currentTarget.id == 'id_add') {
     // add card 
     let taskName = $('#task-name').val();
     let taskText = $('#task-text').val();
     validateInput(taskName, taskText);
+  }
+  if (e.currentTarget.id == 'tips-toggle') {
+    tipsOnFlg = e.currentTarget.id.checked?true:false;
+    alert(tipsOnFlg)
+  }
+}
+
+function mouseEnterHandler(e) {
+  if(tipsOnFlg){
+    if (e.currentTarget.id == 'id_add_img') {
+        $('[data-toggle="popover-add"]').popover("show")
+    }
+    if (e.currentTarget.id == 'id_start') {
+      $('[data-toggle="popover-process"]').popover("show")
+    }
+  }
+}
+
+function mouseLeaveHandler(e) {
+  if(tipsOnFlg){
+    if (e.currentTarget.id == 'id_add_img') {
+      $('[data-toggle="popover-add"]').popover("hide")
+    }
+    if (e.currentTarget.id == 'id_start') {
+      $('[data-toggle="popover-process"]').popover("hide")
+    }
   }
 }
 
@@ -127,9 +160,8 @@ function validateInput(taskName, inputString) {
     setToLocalStorage(stName, trasferToKVStructure(inlineDatas));
     //active reflesh
     $('#id_start').removeAttr('disabled');
-    $('#alertInfo').removeAttr('hidden');
-    $('#alertInfo').html('Upload completely!Press `process` after confirming your input is right.');
-
+    // $('#alertInfo').removeAttr('hidden');
+    // $('#alertInfo').html('Upload completely!Press `process` after confirming your input is right.');
   }
 }
 
@@ -253,9 +285,8 @@ function generateCard(taskName, estimate, taskCnt) {
 
 document.addEventListener('DOMContentLoaded', (tab) => {
   var inputs = document.querySelectorAll('input');
-
   for (var i = 0; i < inputs.length; i++) {
-    if ('button' == inputs[i].type) {
+      if ('button' == inputs[i].type) {
       //prevent enter key
       inputs[i].addEventListener('keyup', function (event) {
         if (event.keyCode === 13) {
@@ -263,9 +294,9 @@ document.addEventListener('DOMContentLoaded', (tab) => {
         }
       });
       inputs[i].addEventListener('click', click);
-    }
   }
-
+  }
+  
   var aLabel = document.querySelectorAll('a');
   for (var i = 0; i < aLabel.length; i++) {
     if ('instruction' == aLabel[i].id) {
@@ -273,12 +304,6 @@ document.addEventListener('DOMContentLoaded', (tab) => {
     }
   }
 
-  var aButton = document.querySelectorAll('button');
-  for (var i = 0; i < aButton.length; i++) {
-    if ('button' == aButton[i].type) {
-      aButton[i].addEventListener('click', click);
-    }
-  }
   var cards = document.querySelectorAll('.card.border-dark');
   for (var i = 0; i < cards.length; i++) {
     cards[i].addEventListener('click', openPreview);
@@ -287,9 +312,24 @@ document.addEventListener('DOMContentLoaded', (tab) => {
   var delBtn = document.querySelectorAll('.img-thumbnail.right-top');
   for (var i = 0; i < delBtn.length; i++) {
     delBtn[i].addEventListener('click', delCard);
-
   }
+    
+  bindTips();
 });
+
+function bindTips(){
+  var aButton = document.querySelectorAll('button');
+  for (var i = 0; i < aButton.length; i++) {
+    if ('button' == aButton[i].type) {
+      aButton[i].removeEventListener('click', click);
+      aButton[i].removeEventListener("mousedown", mouseEnterHandler, true);
+      aButton[i].removeEventListener("mousedown", mouseLeaveHandler, true);
+      aButton[i].addEventListener('click', click);
+      aButton[i].addEventListener('mouseenter', mouseEnterHandler);
+      aButton[i].addEventListener('mouseleave', mouseLeaveHandler);
+    }
+  }
+}
 
 function bindCardEvent() {
   var cards = document.querySelectorAll('.card.border-dark');
@@ -301,7 +341,11 @@ function bindCardEvent() {
   for (var i = 0; i < delBtn.length; i++) {
     delBtn[i].addEventListener('click', delCard);
   }
+  bindTips();
 }
+
+
+
 
 
 function delCard(e) {
@@ -352,10 +396,11 @@ function removeFromLocalStorage(stName) {
   }
 }
 
-$('#newTaskModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget)
-  var recipient = button.data('whatever')
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
+
+$(function() {
+  $('#tips-toggle').change(function(e) {
+    tipsOnFlg = e.currentTarget.checked?true:false;
+  })
+
 })
+

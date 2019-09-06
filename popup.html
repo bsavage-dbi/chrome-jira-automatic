@@ -5,17 +5,26 @@
 	<meta charset="utf-8">
 	<title>JIRA Support</title>
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link href="/css/bootstrap-toggle.min.css" rel="stylesheet">
 	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap-toggle.min.js"></script>
+	<script src="/js/popper.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/popup.js"></script>
 	<style type="text/css">
-		body{
-			padding-top: 4rem; 
+		body {
+			padding-top: 4rem;
 		}
 
 		table {
 			border-collapse: collapse;
 			width: 100%;
+		}
+		
+		a {
+			color: slateblue;
+			text-decoration: none;
+			background-color: transparent;
 		}
 
 		table,
@@ -41,26 +50,6 @@
 		th {
 			background-color: #009688;
 			color: white;
-		}
-
-		input[type=button] {
-			background-color: #009688;
-			border: none;
-			color: white;
-			padding: 5px;
-			text-decoration: none;
-			margin: 4px 0px;
-			cursor: pointer;
-		}
-
-		input[disabled] {
-			background-color: #868686;
-			border: none;
-			color: white;
-			padding: 5px;
-			text-decoration: none;
-			margin: 4px 0px;
-			cursor: pointer;
 		}
 
 		span[ready] {
@@ -130,33 +119,84 @@
 			border-width: 0 0 1px;
 		}
 
-		.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+		.nav-pills .nav-link.active,
+		.nav-pills .show>.nav-link {
 			color: #fff;
 			background-color: darkslateblue;
 		}
 
-		a {
-			color: slateblue;
-			text-decoration: none;
-			background-color: transparent;
+		.processBtn{
+			border: 0px;
+			width:-webkit-fill-available;
+			height:auto;
+			box-shadow: darkslateblue 0rem 0rem 0rem;
+			border-radius: 10rem;
+			padding: .8rem;
+		}
+		
+		.processBtn:hover {
+			-webkit-animation: fadeInOut 2s ease-in-out infinite;
+			-moz-animation: fadeInOut 2s ease-in-out infinite;
+			animation: fadeInOut 2s ease-in-out infinite;
 		}
 
-		@-moz-keyframes processon {
+		.btn-default {
+			color: #333;
+			background-color: #fff;
+			border-color: #ccc;
+		}
+
+		.btn:active, .btn.active {
+			background-image: none;
+			outline: 0;
+			-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+			box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+		}
+		@-moz-keyframes spin {
 			100% {
-				width: 100%;
+				-moz-transform: rotate(180deg);
 			}
 		}
 
-		@-webkit-keyframes processon {
+		@-webkit-keyframes spin {
 			100% {
-				width: 100%;
+				-webkit-transform: rotate(180deg);
 			}
 		}
 
-		@keyframes processon {
+		@keyframes spin {
 			100% {
-				width: 100%;
+				-webkit-transform: rotate(180deg);
+				transform: rotate(180deg);
 			}
+		}
+
+		@-moz-keyframes fadeInOut {
+			50%{
+				box-shadow: darkslateblue 0rem 0rem .25rem;
+			}
+			100% {
+				box-shadow: darkslateblue 0rem 0rem .0rem;
+			}
+		}
+
+		@-webkit-keyframes fadeInOut {
+			50%{
+				box-shadow: darkslateblue 0rem 0rem .25rem;
+			}
+			100% {
+				box-shadow: darkslateblue 0rem 0rem .0rem;
+			}
+		}
+
+		@keyframes fadeInOut {
+			50%{
+				box-shadow: darkslateblue 0rem 0rem .25rem;
+			}
+			100% {
+				box-shadow: darkslateblue 0rem 0rem .0rem;
+			}
+		}
 	</style>
 </head>
 
@@ -176,19 +216,23 @@
 					aria-selected="true">Readme</a>
 			</li>
 		</ul>
+		<ul class="nav nav-pills navbar-right" id="myTab2" role="tablist2">
+			<li class="nav-item">
+				<input id = "tips-toggle" type="checkbox" data-toggle="toggle" data-on="Tips on" data-off="Tips off">
+			</li>
+		</ul>
 	</nav>
 	<div class="container">
-		<div class="tab-content" id="myTabContent">
+	<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 				<div class="alert alert-info" id="alertInfo" role="alert" hidden></div>
 				<input type="file" id="id_file" style="display: none" />
 				<div id="card-list" class="card-columns d-flex flex-wrap" style="padding: 5px 0px;display:flex;">
-					<div class="card" style="max-width: 9rem;max-height: 9rem;margin: 0.25rem;"">
-					<div class=" card-body">
-						<button type="button" class="btn" data-toggle="modal" data-target="#newTaskModal"
-							data-whatever="@getbootstrap">
+					<div class="card" style="max-width: 9rem;max-height: 9rem;margin: 0.25rem;">
+					<div class=" card-body" data-toggle="popover-add" data-placement="top" data-content="You can create new task by tap this card!">
+						<button id = "id_add_img" type="button" class="btn" data-toggle="modal" data-target="#newTaskModal">
 							<img src="./res/baseline_add.png" class="img-thumbnail"
-								style="border: 0px;width:-webkit-fill-available;height:auto;" onblur="">
+								style="border: 0px;width:-webkit-fill-available;height:auto;">
 						</button>
 					</div>
 					<div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog"
@@ -209,7 +253,8 @@
 										</div>
 										<div class="form-group">
 											<label for="task-text" class="col-form-label">Data Content:</label>
-											<textarea class="form-control" id="task-text" style = "height: 12rem"></textarea>
+											<textarea class="form-control" id="task-text"
+												style="height: 12rem"></textarea>
 										</div>
 									</form>
 								</div>
@@ -224,8 +269,7 @@
 				</div>
 			</div>
 			<button type="button" id="id_start" class="btn" style="position: fixed;bottom: 2rem;right: 2rem;" disabled>
-				<img src="./res/baseline_play_arrow_black_48dp.png" class="img-thumbnail"
-					style="border: 0px;width:-webkit-fill-available;height:auto;">
+				<img src="./res/outline_create_black_48dp.png" class="img-thumbnail processBtn" data-toggle="popover-process" data-placement="right" data-content="Click to input your task into JIRA!※Make sure your data is correct,cause once you start the processing it will be unstoppable and undone!">
 			</button>
 		</div>
 		<div class="tab-pane fade show" id="prelist" role="tabpanel" aria-labelledby="prelist-tab">
