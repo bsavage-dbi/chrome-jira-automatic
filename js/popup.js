@@ -1,10 +1,16 @@
 'use strict';
 var dataStr;
 var storageTask;
-var jiraHost = window.location.hostname;
+var jiraHost = '';
 var tipsOnFlg = false;
 chrome.storage.local.set({ storageTask: {} });
 
+function callback(tabs) {
+  var currentTab = tabs[0]; 
+  jiraHost = currentTab.url.match(/^((http[s]?):\/\/)([^:\/\s]+)/)[0];
+}
+
+chrome.tabs.query({ active: true, currentWindow: true }, callback);
 
 //bind function
 function click(e) {
@@ -68,7 +74,9 @@ function timeout(ms) {
       return new Promise((resolve1,reject)=>{
             chrome.tabs.update({ active: true, url: getTaskUrl(taskname) }, async () => {
                 await timeout(2000);
+
                 chrome.tabs.executeScript(null, { code: 'var config = "'.concat(idn).concat('"') }, () => {
+                  chrome.tabs.executeScript(null, { file: '/js/jquery.min.js' }, () => {
                     chrome.tabs.executeScript(null, { file: '/js/inputLogic.js' }, () => {
                       let syncInput =  new Promise((resolve2)=>{
                           let intervalCnt = 1;
@@ -85,7 +93,9 @@ function timeout(ms) {
                         resolve1();
                       })
                     });
+                  });
                 });
+
             });
       });
 }
@@ -99,8 +109,9 @@ function getTaskUrl(taskName) {
   let tsName = taskName.replace('jira_support_data_', '');
   if ('string' == typeof (jiraHost)) {
     return jiraHost
-      .concat('/browse')
-      .concat('/').concat(tsName)
+      .concat('browse')
+      .concat('/')
+      .concat(tsName)
   }
 }
 

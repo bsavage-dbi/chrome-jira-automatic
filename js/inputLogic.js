@@ -1,22 +1,15 @@
 var modalflg = true;
 var taskIdnParam = config;
-var createSub = document.querySelectorAll("#create-subtask")[0]
-var summary;
-var createAnother;
-var timetracking_originalestimate;
-var createSubmit;
+var createSub = $("#create-subtask")[0];
 var openStqcShowPromise = 
 new Promise((resolve, reject)=>{
-        if(undefined!=createSub > 0 && undefined==summary){
+        if(undefined!=createSub > 0 && undefined==$("#summary")[0]){
           createSub.click();
           var intervalWait = setInterval(()=>{
-            createAnother = document.querySelectorAll("#qf-create-another")[0]
-            createSubmit = document.querySelectorAll("#create-issue-submit")[0];
-            timetracking_originalestimate = document.querySelectorAll("#timetracking_originalestimate")[0];
-            summary = document.querySelectorAll("#summary")[0]
-            if(undefined != createAnother){
-              if(!createAnother.checked){
-                createAnother.click();
+            createAnother = $("#qf-create-another")[0];
+            if(undefined != $("#qf-create-another")[0]){
+              if(!$("#qf-create-another")[0].checked){
+                $("#qf-create-another")[0].click();
                 clearInterval(intervalWait);
                 resolve();
               }
@@ -37,17 +30,20 @@ new Promise((resolve, reject)=>{
               if(modalflg){
                 //click stqc_show when its 
                 openStqcShowPromise.then(()=>{
-                  summary.value = data["summary"];
-                  timetracking_originalestimate.value = data["timetracking_originalestimate"];
-                }).finally(()=>{
-                  if("" != summary.value  && "" != timetracking_originalestimate.value){
-                    createSubmit.click();
-                    console.log("created")
-                    console.log(summary.value)
-                  }
-                  if(datas.length == index+2){
+                  if(datas.length == 1){
+                    //close create another
+                    $("#qf-create-another")[0].click();
+                  }else if(datas.length == index+1){
                     modalflg = false;
-                    createAnother.click();
+                    $("#qf-create-another")[0].click();
+                  }
+                $("#summary")[0].value = data["summary"];
+                $("#timetracking_originalestimate")[0].value = data["timetracking_originalestimate"];
+                }).finally(()=>{
+                  if("" != $("#summary")[0].value  && "" != $("#timetracking_originalestimate")[0].value){
+                    $("#create-issue-submit")[0].click();
+                    console.log("created")
+                    console.log($("#summary")[0].value)
                   }
                   datas[index]["completed"] = true;
                   resetToLocalStorage(name,datas,result);
