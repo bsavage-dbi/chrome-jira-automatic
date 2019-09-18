@@ -7,7 +7,7 @@ chrome.storage.local.set({ storageTask: {} });
 
 function callback(tabs) {
   var currentTab = tabs[0]; 
-  jiraHost = currentTab.url.match(/^((http[s]?):\/\/)([^:\/\s]+)/)[0];
+  jiraHost = currentTab.url.match(/^((http[s]?):\/\/)([^:\/\s]+)/)[0] || "";
 }
 
 chrome.tabs.query({ active: true, currentWindow: true }, callback);
