@@ -8,8 +8,8 @@ A chrome extension for creating jira subtask automatically.
 > *Support Jira Version <= 7.X
 
 ## Now Provide
-・Create subtask automatically
-・Support multiple task
+- Create subtask automatically
+- Support multiple task
 
 ## Guidance
 
