@@ -34,8 +34,13 @@ taskB   3h
 - refresh to check process status whenever you want
 
 ### TODO
-- Make button group fixed on bottom
+- ~~Make button group fixed on bottom~~ (abandon)
+- Apply for multiple task importing (done)
+- Card mode (done)
+- Preview tab (done)
 - Support adding multi task (done)
 - Abend loading file to read data (done)
-- beautify UI
-- update tutorial
+- beautify UI (done)
+- update tutorial (design)
+- Add Tips (done)
+- optimize data input to a more friendly way (design)
